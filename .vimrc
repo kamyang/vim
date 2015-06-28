@@ -53,8 +53,8 @@ set showcmd         " 输入的命令显示出来，看的清楚些
 "set whichwrap+=<,>,h,l   " 允许backspace和光标键跨越行边界(不建议)
 "set scrolloff=3     " 光标移动到buffer的顶部和底部时保持3行距离
 set novisualbell    " 不要闪烁(不明白)
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容
-set laststatus=1    " 启动显示状态行(1),总是显示状态行(2)
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容
+set laststatus=2    " 启动显示状态行(1),总是显示状态行(2)
 set foldenable      " 允许折叠
 set foldmethod=manual   " 手动折叠
 "set background=dark "背景使用黑色
@@ -123,22 +123,26 @@ func SetTitle()
 		call append(line(".")+9, "#endif //".toupper(expand("%:t:r"))."_H_")
 		exec "normal 10gg"
 	elseif &filetype == 'cpp'
-		call append(line(".")+6, "#include<iostream>")
+		call append(line(".")+6, "#include <iostream>")
 		call append(line(".")+7, "using namespace std;")
 		call append(line(".")+8, "")
 		exec "normal G"
 		" 跳转到最后
 	elseif &filetype == 'c'
-		call append(line(".")+6, "#include<stdio.h>")
+		call append(line(".")+6, "#include <stdio.h>")
 		call append(line(".")+7, "")
 		"autocmd BufNewFile * normal G
 		exec "normal G"
 	endif
-	"	if &filetype == 'java'
-	"		call append(line(".")+6,"public class ".expand("%"))
-	"		call append(line(".")+7,"")
-	"	endif
-	"新建文件后，自动定位到文件末尾
+	""	if &filetype == 'java'
+	""		call append(line(".")+6,"public class ".expand("%") " {")
+	""		call append(line(".")+7,"	public static void main(String[] args) {")
+	""		call append(line(".")+8,"")
+	""		call append(line(".")+9,"	}")
+	""		call append(line(".")+10,"}")
+	""		exec "normal 10gg"
+	""	endif
+	"""新建文件后，自动定位到文件末尾
 	"autocmd BufNewFile * normal G
 endfunc
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -172,12 +176,13 @@ func CompileRunGcc()
 		exec "!clang++ % -std=c++11 -o %<"
 		exec "! ./%<"
 	elseif &filetype == 'cpp'
-		exec "!g++ % -o %<"
+		exec "!clang++ % -std=c++11 -o %<"
 		exec "! ./%<"
 	elseif &filetype == 'java'
 		exec "!javac %"
 		exec "!java %<"
 	elseif &filetype == 'sh'
+		exec "!chmod u+x %"
 		:!./%
 	elseif &filetype == 'py'
 		exec "!python %"
@@ -200,7 +205,7 @@ endfunc
 " 设置当文件被改动时自动载入
 set autoread
 " quickfix模式
-autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
+"autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
 "代码补全
 set completeopt=preview,menu
 "共享剪贴板
@@ -341,7 +346,7 @@ let g:ycm_min_num_of_chars_for_completion=1	" 从第2个键入字符就开始罗
 let g:ycm_cache_omnifunc=0	" 禁止缓存匹配项,每次都重新生成匹配项
 let g:ycm_seed_identifiers_with_syntax=1	" 语法关键字补全
 " force recomile with syntastic
-nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+nnoremap <F6> :YcmForceCompileAndDiagnostics<CR>
 " open locationlist
 nnoremap <leader>lo :lopen<CR>
 " close locationlist
@@ -352,7 +357,6 @@ let g:ycm_complete_in_comments = 1
 " 在字符串输入中也能补全
 let g:ycm_complete_in_strings = 1
 " 注释和字符串中的文字也会被收入补全
-let g:ycm_collect_identifiers_from_comments_and_strings = 0
 
 " 主题 solarized
 Bundle 'altercation/vim-colors-solarized'
@@ -363,7 +367,7 @@ let g:solarized_visibility="normal"
 " 主题 molokai
 Bundle 'tomasr/molokai'
 let g:molokai_original = 1
-
+let g:rehash256 = 1
 " 配色方案
 set background=dark
 set t_Co=256
@@ -373,8 +377,8 @@ if g:isGUI
     colorscheme molokai
     "colorscheme phd
 else
-    colorscheme solarized
-    "colorscheme molokai
+    "colorscheme solarized
+    colorscheme molokai
     "colorscheme phd
 endif
 
