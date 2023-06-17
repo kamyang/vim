@@ -340,11 +340,26 @@ let mapleader = ","  " 这个leader就映射为逗号“，”
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'	"  配置默认的ycm_extra_conf.py
 " 按下,jd会跳转到定义
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+set completeopt=menu,menuone
+let g:ycm_add_preview_to_completeopt=0  "关闭函数原型提示
+let g:ycm_show_diagnostics_ui=0   "关闭诊断信息
+let g:ycm_server_log_level='info'
 let g:ycm_confirm_extra_conf=0		 "	打开vim时不再询问是否加载ycm_extra_conf.py配置
 let g:ycm_collect_identifiers_from_tags_files=1	" 开启 YCM 基于标签引擎
 let g:ycm_min_num_of_chars_for_completion=1	" 从第2个键入字符就开始罗列匹配项
 let g:ycm_cache_omnifunc=0	" 禁止缓存匹配项,每次都重新生成匹配项
 let g:ycm_seed_identifiers_with_syntax=1	" 语法关键字补全
+let g:ycm_max_num_candidates=15 "候选数量
+
+let g:ycm_semantic_triggers={
+			\ 'c,cpp,python,java,go,erlang,perl':['re!\w{2}'],
+			\ 'cs,lua,javascript': ['re!\w{2}'],
+			\}
+
+if filereadable("tags")
+	set tags=tags
+endif
+
 " force recomile with syntastic
 nnoremap <F6> :YcmForceCompileAndDiagnostics<CR>
 " open locationlist
