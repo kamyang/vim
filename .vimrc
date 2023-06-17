@@ -334,7 +334,7 @@ call vundle#rc()
 filetype plugin indent on     " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " YCM 插件
-Bundle 'Valloric/YouCompleteMe'
+Bundle 'ycm-core/YouCompleteMe'
 
 let mapleader = ","  " 这个leader就映射为逗号“，”
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'	"  配置默认的ycm_extra_conf.py
@@ -652,7 +652,7 @@ let python_highlight_all = 1
 Bundle 'Mizuchi/STL-Syntax'
 
 " 接口与实现快速切换
-Bundle "a.vim"
+Bundle "vim-scripts/a.vim"
 " *.cpp 和 *.h之间切换
 nmap <Leader>ch :A<CR>
 " 子窗口中显示 *.cpp 和*.h
