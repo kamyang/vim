@@ -1,0 +1,3 @@
+这个是一个vim的配置，在使用该配置前，需要安装Vundle插件进行vim插件管理，安装,更新和卸载等。其中，vundle直接使用git进… 
+
+…行安装即可。其命令如下：git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle  安装YCM（YouCompleteMe）使用sudo vim进入vim里，然后输入:BundleInstall即可
